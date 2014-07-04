@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+<title>Fractal Canvas Benchmark</title>
+<script src="../color/color.js"></script>
+<script src="../pythagoras.js"></script>
+<script src="../htree.js"></script>
+<script src="../koch.js"></script>
+</head>
+<body>
+<h1>Benchmark your browsers canvas performance!</h1>
+<p>This benchmark animates a complex fractal onto a HTML5 canvas, and
+outputs the number of ms it took to render one frame</p>
+
+<ul>
+	<li><a href="#" onclick="initFractal('Pythagoras')">Pythagoras tree</a></li>
+	<li><a href="#" onclick="initFractal('Koch')">Koch snowflake</a></li>
+	<li><a href="#" onclick="initFractal('HTree')"">H-Tree</a></li>
+</ul>
+
+<canvas id="canvas"  height="400" width="600"></canvas>
+<div id="result">Result: </div>
+<script type="text/javascript">
+	function approachTarget(target, pos, step) {
+		var diff = pos.x - target.x;
+
+		if (diff < step && -diff < step) {
+			pos.x = target.x;
+		} else if (diff > 0) {
+			pos.x -= step;
+		} else {
+			pos.x += step;
+		}
+
+		diff = pos.y - target.y;
+
+		if (diff < step && -diff < step) {
+			pos.y = target.y;
+		} else if (diff > 0) {
+			pos.y -= step;
+		} else {
+			pos.y += step;
+		}
+	}
+
+	var canvas = document.getElementById('canvas'),
+		result = document.getElementById('result'),
+		fract;
+	
+	function initFractal(name) {
+		switch (name) {
+		case 'Pythagoras':
+			fract = new Fractal.Pythagoras(canvas, 10, {x : 0, y : 0},
+										   "black", "#305e70");
+			break;
+		case 'Koch':
+			fract = new Fractal.Koch(canvas, 6, {x : 0, y : 0}, "#477ff1");
+			break;
+		default:
+			fract = new Fractal.HTree(canvas, 14, {x : 0, y : 0},
+									  "black", "rgba(91,0,144,0.3)", true);
+			break;
+		}
+	}
+	
+	initFractal("HTree");
+
+	//start animation
+	var time = Date.now(), target = {x : canvas.width, y : 0},
+		pos = {x : 0, y : 0};
+
+	setInterval(function() {
+		result.textContent = 'Result: ' + (Date.now() - time) + 'ms';
+		time = Date.now();
+
+		if (pos.x === target.x) {
+			if (target.x !== 0) {
+				target.x = 0;
+			} else {
+				target.x = canvas.width;
+			}
+		}
+		approachTarget(target, pos, 10);
+		fract.update(pos);
+	}, 10);
+</script>
+</body>
+</html>
