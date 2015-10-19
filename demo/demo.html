@@ -3,6 +3,8 @@
 <head>
 <title>Fractal Canvas Benchmark</title>
 <script src="../color/color.js"></script>
+<script src="../fractal.js"></script>
+<script src="../animation.js"></script>
 <script src="../pythagoras.js"></script>
 <script src="../htree.js"></script>
 <script src="../koch.js"></script>
@@ -15,44 +17,43 @@ quite a nice effect.</p>
 
 <h2>H-Tree</h2>
 
-<canvas id="HTree" height="400" width="600"></canvas>
+<canvas id="HTreeDemo" height="400" width="600"></canvas>
 
 <h2>Koch snowflake</h2>
 
-<canvas id="Koch" height="400" width="600"></canvas>
+<canvas id="KochDemo" height="400" width="600"></canvas>
 
 <h2>Pythagoras tree</h2>
 
-<canvas id="Pyth" height="400" width="600"></canvas>
+<canvas id="PythagorasDemo" height="400" width="600"></canvas>
 
 <script type="text/javascript">
-	function getMousePos(canvas, evt) {
-		var rect = canvas.getBoundingClientRect();
-		return {
-			x : evt.clientX - rect.left,
-			y : evt.clientY - rect.top
-		};
-	}
-
-	var htree_canvas = document.getElementById("HTree");
-	var htree = new Fractal.HTree(htree_canvas, 14, {x : 0,y : 0},
-								  "black", "rgba(91,0,144,0.3)", true);
-	htree_canvas.addEventListener('mousemove', function(evt) {
-		htree.update(getMousePos(htree_canvas, evt));
-	}, false);
-
-	var koch_canvas = document.getElementById("Koch");
-	var koch = new Fractal.Koch(koch_canvas, 5, {x : 0, y : 0}, "#477ff1");
-	koch_canvas.addEventListener('mousemove', function(evt) {
-		koch.update(getMousePos(koch_canvas, evt));
-	}, false);
+	var canvas = document.getElementById('KochDemo'),
+	fract = new Fractal.Koch(canvas, {x: 0, y: 0}, 5, "#477ff1");
 	
-	var pyth_canvas = document.getElementById("Pyth");
-	var pyth = new Fractal.Pythagoras(pyth_canvas, 9, {x:0,y:0},
-									  "#D4E576","#126845");
-	pyth_canvas.addEventListener('mousemove', function(evt) {
-		pyth.update(getMousePos(pyth_canvas, evt));
-	}, false);
+	var start = {x: canvas.width / 2, y: canvas.height},
+	target = {x: 0, y: 0},
+	kochAnim = new Fractal.Animation(fract, start, target);
+	
+	kochAnim.skip(4000);
+	
+	canvas = document.getElementById('PythagorasDemo'),
+	fract = new Fractal.Pythagoras(canvas, {x: 0, y: 0}, 9, "#D4E576","#126845");
+	
+	start = {x: canvas.width / 2, y: canvas.height};
+	target = {x: 0, y: 0};
+	var pythAnim = new Fractal.Animation(fract, start, target);
+	
+	pythAnim.skip(6000);
+	
+	canvas = document.getElementById('HTreeDemo'),
+	fract = new Fractal.HTree(canvas, {x: 0, y: 0}, 14, "black", "rgba(91,0,144,0.3)", true);
+	
+	start = {x: canvas.width / 2, y: canvas.height};
+	target = {x: canvas.width / 4, y: canvas.height / 7};
+	var htreeAnim = new Fractal.Animation(fract, start, target);
+	
+	htreeAnim.skip(2000);
 </script>
 
 </body>

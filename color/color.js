@@ -1,9 +1,9 @@
 /*
- * @licstart  The following is the entire license notice for the 
+ * @licstart  The following is the entire license notice for the
  * JavaScript code in this page.
- * 
+ *
  * Copyright (C) 2014  Andreas Rohner
- * 
+ *
  * The JavaScript code in this page is free software: you can
  * redistribute it and/or modify it under the terms of the GNU
  * General Public License (GNU GPL) as published by the Free Software
@@ -11,19 +11,23 @@
  * any later version.  The code is distributed WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
- * 
+ *
  * As additional permission under GNU GPL version 3 section 7, you
  * may distribute non-source (e.g., minimized or compacted) forms of
  * that code without the copy of the GNU GPL normally required by
  * section 4, provided you include this license notice and a URL
  * through which recipients can access the Corresponding Source.
- * 
+ *
  * @licend  The above is the entire license notice
  * for the JavaScript code in this page.
  */
 
 var Color = (function (Color){
 	"use strict";
+
+	// Check for double inclusion
+	if (Color.parse)
+		return Color;
 
 	var colorNames={
 		aliceblue:'#f0f8ff', antiquewhite:'#faebd7', aqua:'#00ffff',
@@ -116,14 +120,14 @@ var Color = (function (Color){
 
 		for (var i = 0; i < steps - 1; ++i) {
 			if (alpha) {
-				res[i] = 'rgba(' + Math.round(c1[0] + i * stepr) + ','
-							+ Math.round(c1[1] + i * stepg) + ','
-							+ Math.round(c1[2] + i * stepb) + ','
-							+ Math.round((c1[3] + i * stepa) * 100) / 100 + ')';
+				res[i] = 'rgba(' + Math.round(c1[0] + i * stepr) + ',' +
+							Math.round(c1[1] + i * stepg) + ',' +
+							Math.round(c1[2] + i * stepb) + ',' +
+							Math.round((c1[3] + i * stepa) * 100) / 100 + ')';
 			} else {
-				res[i] = 'rgb(' + Math.round(c1[0] + i * stepr) + ','
-							+ Math.round(c1[1] + i * stepg) + ','
-							+ Math.round(c1[2] + i * stepb) + ')';
+				res[i] = 'rgb(' + Math.round(c1[0] + i * stepr) + ',' +
+							Math.round(c1[1] + i * stepg) + ',' +
+							Math.round(c1[2] + i * stepb) + ')';
 			}
 		}
 
@@ -144,11 +148,11 @@ var Color = (function (Color){
 		for (var i = 0; i < steps; ++i) {
 			cout = Color.HSVtoRGB([ c[0],
 							Math.max(0, Math.min(100, Math.round(c[1] + i * -percent))),
-							Math.max(0, Math.min(100, Math.round(c[2] + i * percent)))
-							, c[3] ]);
+							Math.max(0, Math.min(100, Math.round(c[2] + i * percent))),
+							c[3] ]);
 
-			res[i] = 'rgba(' + cout[0] + ',' + cout[1] + ',' + cout[2]
-					+ ',' + cout[3] + ')';
+			res[i] = 'rgba(' + cout[0] + ',' + cout[1] + ',' + cout[2] +
+					',' + cout[3] + ')';
 		}
 
 		return res;
@@ -164,7 +168,7 @@ var Color = (function (Color){
 			delta = max - min,
 			v = max, s, h;
 
-		if (max != 0) {
+		if (max !== 0) {
 			s = delta / max;
 		} else {
 			s = 0;
@@ -192,7 +196,7 @@ var Color = (function (Color){
 			s = c[1] / 100,
 			v = c[2] / 100;
 
-		if (s == 0)
+		if (s === 0)
 			return [ v * 255, v * 255, v * 255, c[3] ];
 
 		i = Math.floor(h);
@@ -216,6 +220,6 @@ var Color = (function (Color){
 			return [ v, p, q, c[3] ];
 		}
 	};
-	
+
 	return Color;
 }(Color || {}));
